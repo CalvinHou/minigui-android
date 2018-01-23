@@ -19,10 +19,16 @@
 #include "pixels_c.h"
 #include "license.h"
 
+#include <android/log.h>
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, "ANDROIDVIDEO",__VA_ARGS__)
+
 /* Available video drivers */
 static VideoBootStrap *bootstrap[] = {
 #ifdef _MGGAL_DUMMY
     &DUMMY_bootstrap,
+#endif
+#ifdef _MGGAL_ANDROID
+    &ANDROID_bootstrap,
 #endif
 #ifdef _MGGAL_FBCON
     &FBCON_bootstrap,
@@ -322,13 +328,16 @@ int GAL_VideoModeOK (int width, int height, int bpp, Uint32 flags)
     GAL_PixelFormat format;
     GAL_Rect **sizes;
 
+    LOGE("ok:1");
     /* Currently 1 and 4 bpp are not supported */
     if ( bpp < 8 || bpp > 32 ) {
         return(0);
     }
+    LOGE("ok:2");
     if ( (width == 0) || (height == 0) ) {
         return(0);
     }
+    LOGE("ok:3");
 
     /* Search through the list valid of modes */
     memset(&format, 0, sizeof(format));
@@ -356,6 +365,7 @@ int GAL_VideoModeOK (int width, int height, int bpp, Uint32 flags)
                     }
                 }
     }
+    LOGE("ok:4");
     if ( supported ) {
         --b;
         return(GAL_closest_depths[table][b]);
@@ -378,8 +388,11 @@ static int GAL_GetVideoMode (int *w, int *h, int *BitsPerPixel, Uint32 flags)
     /* Try the original video mode, get the closest depth */
     native_bpp = GAL_VideoModeOK(*w, *h, *BitsPerPixel, flags);
 
+    LOGE("videomode:1");
+
     if (native_bpp == 0)
         return 0;
+    LOGE("videomode:2");
 
     if ( native_bpp == *BitsPerPixel ) {
         return(1);
@@ -388,6 +401,8 @@ static int GAL_GetVideoMode (int *w, int *h, int *BitsPerPixel, Uint32 flags)
         *BitsPerPixel = native_bpp;
         return(1);
     }
+
+    LOGE("videomode:3");
 
     /* No exact size match at any depth, look for closest match */
     memset(&format, 0, sizeof(format));
@@ -427,6 +442,7 @@ static int GAL_GetVideoMode (int *w, int *h, int *BitsPerPixel, Uint32 flags)
         }
     }
     if ( ! supported ) {
+        LOGE("videomode:4");
         GAL_SetError("NEWGAL: No video mode large enough for the resolution "
                 "specified.\n");
     }

@@ -74,6 +74,16 @@
 #  endif
 #endif
 
+
+#ifdef _MGGAL_ANDROID
+#include <jni.h>
+#include <android/log.h>
+
+
+//#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, "ANDROIDVIDEO",__VA_ARGS__)
+#define  LOGE(...)  
+#endif
+
     /**
      * \defgroup macros_types Macros and data types commonly used
      * @{

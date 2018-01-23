@@ -28,6 +28,7 @@ EXTRA_DIST=spec_general_ts_drv.html \
 COMMON_SRCS = ial.c
 
 DUMMY_SRCS = dummy.c dummy.h
+ANDROID_SRCS = androidial.c androidial.h
 AUTO_SRCS = auto.c auto.h auto-protocol.h
 JZ4740_SRCS = jz4740.c jz4740.h
 SHANDONG_LIDE_SRCS = lide.c lide.h
@@ -67,7 +68,7 @@ endif
 libial_la_LIBADD = $(native_libial_la_LIBADD) $(nexus_libial_la_LIBADD) $(netial_libial_la_LIBADD) \
 				   $(dlcustom_libdlcustom_la_LIBADD)
 
-libial_la_SOURCES = $(COMMON_SRCS) $(DUMMY_SRCS) $(JZ4740_SRCS) \
+libial_la_SOURCES = $(COMMON_SRCS) $(ANDROID_SRCS) $(DUMMY_SRCS) $(JZ4740_SRCS) \
 					$(AUTO_SRCS) $(RANDOM_SRCS) $(2440_SRCS) $(DAVINCI6446_SRCS) \
                     $(PCXVFB_SRCS) $(RTOSXVFB_SRCS) \
                     $(COMMINPUT_SRCS) $(QVFB_SRCS) $(WVFB_SRCS) \

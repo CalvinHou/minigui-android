@@ -38,6 +38,7 @@
 #include "event.h"
 #include "misc.h"
 
+
 #ifdef _MGRM_PROCESSES
 #include "sharedres.h"
 #endif
@@ -572,6 +573,8 @@ BOOL kernel_GetLWEvent (int event, PLWEVENT lwe)
 
     timeout_count = 0;
     /* There was an event occurred. */
+
+    LOGE("check mouse event");
     if (event & IAL_MOUSEEVENT) {
         lwe->type = LWETYPE_MOUSE;
         if (kernel_RefreshCursor(&me->x, &me->y, &button)) {
@@ -584,7 +587,14 @@ BOOL kernel_GetLWEvent (int event, PLWEVENT lwe)
             if (button == oldbutton)
                 goto mouseret;
         }
+	char buf[100];
+	sprintf(buf, "button:%d", button);
    
+        LOGE("check left button event");
+        LOGE(buf);
+	sprintf(buf, "oldbutton:%d", oldbutton);
+        LOGE(buf);
+
         if ( !(oldbutton & IAL_MOUSE_LEFTBUTTON) && 
               (button & IAL_MOUSE_LEFTBUTTON) )
         {
@@ -597,8 +607,10 @@ BOOL kernel_GetLWEvent (int event, PLWEVENT lwe)
                 me->event = ME_LEFTDOWN;
             time1 = __mg_timer_counter;
 
+	    LOGE("left button down");
             goto mouseret;
         }
+        LOGE("check left button event up");
 
         if ( (oldbutton & IAL_MOUSE_LEFTBUTTON) && 
              !(button & IAL_MOUSE_LEFTBUTTON) )
@@ -606,9 +618,11 @@ BOOL kernel_GetLWEvent (int event, PLWEVENT lwe)
             license_on_input();
 
             me->event = ME_LEFTUP;
+	    LOGE("left button up");
             goto mouseret;
         }
 
+        LOGE("check left button event other");
         if ( !(oldbutton & IAL_MOUSE_RIGHTBUTTON) && 
               (button & IAL_MOUSE_RIGHTBUTTON) )
         {

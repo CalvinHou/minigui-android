@@ -23,7 +23,8 @@
 #ifndef __NOUNIX__
 #include <unistd.h>
 #include <signal.h>
-#include <sys/termios.h>
+//#include <sys/termios.h>
+#include <termios.h>
 #endif
 
 #include "minigui.h"
@@ -342,7 +343,9 @@ int GUIAPI InitGUI (int args, const char *agr[])
 
 #ifndef __NOUNIX__
     // Save original termio
+#ifndef _MGGAL_ANDROID
     tcgetattr (0, &savedtermio);
+#endif
 #endif
 
     /*initialize default window process*/

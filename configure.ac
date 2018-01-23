@@ -107,6 +107,7 @@ with_skin_lf="yes"
 dnl IAL engine-specific options
 dnl software IAL engines
 build_dummy_ial_engine="yes"
+build_android_ial_engine="yes"
 build_auto_ial_engine="no"
 build_random_ial_engine="no"
 build_net_ial_engine="no"
@@ -245,6 +246,7 @@ build_ctrl_gridview="no"
 build_ctrl_animation="yes"
 
 enable_video_dummy="yes"
+enable_video_android="yes"
 enable_video_pc_xvfb="yes"
 enable_video_rtos_xvfb="no"
 enable_video_qvfb="no"
@@ -401,6 +403,10 @@ build_tslib_ial_engine=$enableval)
 AC_ARG_ENABLE(dummyial,
 [  --enable-dummyial        build the Dummy IAL engine <default=yes>],
 build_dummy_ial_engine=$enableval)
+
+AC_ARG_ENABLE(androidial,
+[  --enable-androidial        build the Android IAL engine <default=yes>],
+build_android_ial_engine=$enableval)
 
 AC_ARG_ENABLE(autoial,
 [  --enable-autoial         build the Automatic IAL engine <default=no>],
@@ -835,6 +841,21 @@ CheckDummyVideo()
                 [Define if include dummy NEWGAL engine])
       VIDEO_SUBDIRS="$VIDEO_SUBDIRS dummy"
       VIDEO_DRIVERS="$VIDEO_DRIVERS dummy/libvideo_null.la"
+    fi
+}
+
+dnl Set up the android video driver.
+CheckAndroidVideo()
+{
+    AC_ARG_ENABLE(videoandroid,
+[  --enable-videoandroid      include android NEWGAL engine <default=yes>],
+    enable_video_android=$enableval)
+
+    if test "x$enable_video_android" = "xyes"; then
+      AC_DEFINE(_MGGAL_ANDROID, 1,
+                [Define if include android NEWGAL engine])
+      VIDEO_SUBDIRS="$VIDEO_SUBDIRS androidvideo "
+      VIDEO_DRIVERS="$VIDEO_DRIVERS androidvideo/libvideo_android.la"
     fi
 }
 
@@ -1298,6 +1319,7 @@ fi
 dnl Checks NewGAL Engine.
 {
   CheckDummyVideo
+  CheckAndroidVideo
   CheckFBCON
   CheckQVFB
   CheckXVFB
@@ -1707,6 +1729,10 @@ fi
 if test "x$build_dummy_ial_engine" = "xyes"; then
     AC_DEFINE(_MGIAL_DUMMY, 1,
             [Define if include the dummy IAL engine])
+fi
+if test "x$build_android_ial_engine" = "xyes"; then
+    AC_DEFINE(_MGIAL_ANDROID, 1,
+            [Define if include the android IAL engine])
 fi
 
 if test "x$build_auto_ial_engine" = "xyes"; then
@@ -2441,6 +2467,7 @@ src/newgal/em86gfx/Makefile
 src/newgal/em85xxyuv/Makefile
 src/newgal/em85xxosd/Makefile
 src/newgal/dummy/Makefile
+src/newgal/androidvideo/Makefile
 src/newgal/svpxxosd/Makefile
 src/newgal/bf533/Makefile
 src/newgal/mb93493/Makefile

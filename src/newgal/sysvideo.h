@@ -187,6 +187,9 @@ typedef struct VideoBootStrap {
 #ifdef _MGGAL_DUMMY
 extern VideoBootStrap DUMMY_bootstrap;
 #endif
+#ifdef _MGGAL_ANDROID
+extern VideoBootStrap ANDROID_bootstrap;
+#endif
 #ifdef _MGGAL_FBCON
 extern VideoBootStrap FBCON_bootstrap;
 #endif

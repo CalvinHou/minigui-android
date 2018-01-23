@@ -272,7 +272,7 @@ static inline int MGGET_ARG_COUNT(va_list va)
 		va_list va;
 		DWORD   dva;
 	}_va;
-	_va.va = va;
+	///_va.va = va;
 	if(_va.dva == 0)
 		return 0;
 	//return va_arg(va, int); 

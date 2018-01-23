@@ -5,6 +5,7 @@ mg_add_sub_dir_with_condition (fbcon        _MGGAL_FBCON)
 mg_add_sub_dir_with_condition (dfb          _MGGAL_DFB)
 
 mg_add_sub_dir_with_condition (dummy        _MGGAL_DUMMY)
+mg_add_sub_dir_with_condition (anroidvideo  _MGGAL_ANDROIDVIDEO)
 mg_add_sub_dir_with_condition (qvfb         _MGGAL_QVFB)
 mg_add_sub_dir_with_condition (wvfb         _MGGAL_WVFB)
 mg_add_sub_dir_with_condition (commlcd      _MGGAL_COMMLCD)

@@ -39,6 +39,9 @@
 #ifdef _MGIAL_DUMMY
     #include "dummy.h"
 #endif
+#ifdef _MGIAL_ANDROID
+    #include "androidial.h"
+#endif
 #ifdef _MGIAL_AUTO
     #include "auto.h"
 #endif
@@ -111,6 +114,9 @@ static INPUT inputs [] =
 #endif
 #ifdef _MGIAL_DUMMY
     {"dummy", InitDummyInput, TermDummyInput},
+#endif
+#ifdef _MGIAL_ANDROID
+    {"android", InitAndroidInput, TermAndroidInput},
 #endif
 #ifdef _MGIAL_AUTO
     {"auto", InitAutoInput, TermAutoInput},

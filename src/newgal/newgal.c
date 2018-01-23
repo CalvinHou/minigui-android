@@ -21,11 +21,50 @@
 #include "misc.h"
 #include "license.h"
 
+#ifdef _MGGAL_ANDROID
+#include <jni.h>
+#endif
 
 GAL_Surface* __gal_screen;
 
 #define LEN_ENGINE_NAME 10
 #define LEN_MODE        20
+
+#ifdef _MGGAL_ANDROID
+int __mg_screen_w = 0;
+int __mg_screen_h = 0;
+
+JNIEXPORT jstring JNICALL
+Java_com_example_houhuihua_myapplication_MainActivity_startMiniGUIMain( JNIEnv* env,
+                                                  jobject thiz, jint w, jint h)
+{
+    __mg_screen_w = w;
+    __mg_screen_h = h;
+
+    //main_entry(0, NULL);
+
+    int iRet = 0; 
+    if (InitGUI (0, NULL) != 0) { 
+        return "Error, startMiniGUIMain"; 
+    } 
+
+    return (*env)->NewStringUTF(env, "Success, startMiniGUIMain.");
+}
+
+JNIEXPORT jint JNICALL
+Java_com_example_houhuihua_myapplication_MainActivity_peekMiniGUIMessage( JNIEnv* env,
+                                                  jobject thiz)
+{
+
+    int iRet = 0; 
+    iRet = MiniGUIAppMain (0, NULL); 
+    TerminateGUI (iRet); 
+
+    //return (*env)->NewStringUTF(env, "Success, peekMiniGUIMessage.");
+    return iRet;
+}
+
+#endif
 
 BOOL GAL_ParseVideoMode (const char* mode, int* w, int* h, int* depth)
 {
@@ -43,6 +82,16 @@ BOOL GAL_ParseVideoMode (const char* mode, int* w, int* h, int* depth)
         return FALSE;
 
     *depth = atoi (tmp + 1);
+
+#ifdef _MGGAL_ANDROID
+    if (__mg_screen_w > 0) {
+	*w = __mg_screen_w;
+    }
+    if (__mg_screen_h > 0) {
+	*h = __mg_screen_h;
+    }
+    *depth = 16;
+#endif
 
     return TRUE;
 }
